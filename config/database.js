@@ -1,17 +1,14 @@
 require('dotenv').config()
-const express = require('express')
 const mongoose = require('mongoose')
-const router = require('express').Router()
 
 mongoose.connect(
     `mongodb://127.0.0.1:27017/App_ToDoList?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.4.0`)
     .then(() => {
-        express().listen(8000)
         console.log('TA DENTRO PAE!')
     })
     .catch((err) => console.log(err))
 
-module.exports = router
+module.exports = mongoose
 
 // DB_USER=admin
 // DB_PASSWORD=password

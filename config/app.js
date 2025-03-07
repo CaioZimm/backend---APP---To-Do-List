@@ -12,19 +12,12 @@ app.use(
     cors()
 )
 
-// const User = require('../src/models/User')
+const authRoutes = require('../src/routes/authRoutes')
+app.use(authRoutes)
 
-// const newUser = new User({
-//     name: 'Caio',
-//     email: 'caio@gmail.com',
-//     password: 'password',
-//     createdAt: Date.now()
-// });
-
-// newUser.save()
-//   .then(doc => console.log(doc))
-//   .catch(err => console.error(err));
+const userRoutes = require('../src/routes/userRoutes')
+app.use(userRoutes)
 
 // Importação para o banco de dados
-const database = require('./database')
-app.use(database);
+require('./database');
+app.listen(8000)

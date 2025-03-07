@@ -15,13 +15,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         min: 4
     },
-    confirmPassword: { 
-        type: String,
-        min: 4
-    },
-    photo: {
-        type: Image
-    },
+    // photo: {
+    //     type: Image,
+    //     default: null,
+    // },
     createdAt: {
         type: Date
     }
