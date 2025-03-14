@@ -1,4 +1,6 @@
 const userService = require('../services/userService');
+const Redis = require('ioredis')
+const redis = new Redis()
 
 exports.getAllUsers = async (req, res) => {
     try {
@@ -58,8 +60,12 @@ exports.putPassword = async (req, res) => {
 }
 
 exports.deleteUser = async (req, res) => {
+    const token = req.header('Authorization').replace('Bearer ', '');
+    
     try {
         await userService.deleteUser(req.user.id);
+        await redis.setex(`blacklist:${token}`, 3600, 'invalid');
+
         res.status(200).json({ message: 'Usuário deletado com sucesso'})
 
     } catch (error) {
