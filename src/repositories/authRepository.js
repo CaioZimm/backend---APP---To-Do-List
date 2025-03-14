@@ -26,9 +26,16 @@ exports.login = async (email) => {
     }
 }
 
-exports.logout = async (user) => {
+exports.logout = async (id) => {
     try {
-        return user
+        const user = await User.findById(id);
+
+        if(!user){
+            res.status(404).json({ message: 'Usuário não encontrado'})
+            return
+        }
+        
+        return;
 
     } catch (error) {
         throw new Error('Erro ao deslogar com usuário: ' + error.message);

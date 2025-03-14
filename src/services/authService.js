@@ -18,3 +18,7 @@ exports.registerUser = async (name, email, password) => {
 exports.loginUser = async (email, password) => {
     return await authRepository.login(email, password)
 }
+
+exports.logoutUser = async (id) => {
+    return await authRepository.logout(id)
+}

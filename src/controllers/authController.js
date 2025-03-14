@@ -1,6 +1,8 @@
 const authService = require('../services/authService')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const Redis = require('ioredis')
+const redis = new Redis()
 const User = require('../models/User')
 
 exports.registerUser = async (req, res) => {
@@ -36,10 +38,23 @@ exports.loginUser = async (req, res) => {
     }
 
     try {
-        const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET, { expiresIn: '1h'});
         return res.status(200).json({ message: 'Logado com sucesso', token})
 
     } catch (error) {
         res.status(500).json({ message: error })
+    }
+}
+
+exports.logoutUser = async (req, res) => {
+    const token = req.header('Authorization').replace('Bearer ', '');
+
+    try {
+        await redis.setex(`blacklist:${token}`, 3600, 'invalid');
+
+        return res.status(200).json({ message: 'Deslogado com sucesso' });
+
+    } catch (error) {
+        return res.status(500).json({ message: 'Erro ao deslogar: ' + error.message });
     }
 }
