@@ -7,12 +7,16 @@ const taskSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
+        required: true
     },
     idUser: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
     idCategory: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
         default: null
     }
 });
