@@ -38,7 +38,7 @@ exports.loginUser = async (req, res) => {
     }
 
     try {
-        const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET, { expiresIn: '1h'});
+        const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET, { expiresIn: '4h'});
         return res.status(200).json({ message: 'Logado com sucesso', token})
 
     } catch (error) {
@@ -50,7 +50,7 @@ exports.logoutUser = async (req, res) => {
     const token = req.header('Authorization').replace('Bearer ', '');
 
     try {
-        await redis.setex(`blacklist:${token}`, 3600, 'invalid');
+        await redis.setex(`blacklist:${token}`, 14400, 'invalid');
 
         return res.status(200).json({ message: 'Deslogado com sucesso' });
 
