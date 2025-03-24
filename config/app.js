@@ -21,6 +21,9 @@ app.use(userRoutes)
 const taskRoutes = require('../src/routes/taskRoutes')
 app.use(taskRoutes)
 
+const categoryRoutes = require('../src/routes/categoryRoutes')
+app.use(categoryRoutes)
+
 // Importação para o banco de dados
 require('./database');
 app.listen(8000)
