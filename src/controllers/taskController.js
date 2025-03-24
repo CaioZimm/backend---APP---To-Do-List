@@ -16,7 +16,12 @@ exports.createTask = async (req, res) => {
 
 exports.getAllTasks = async (req, res) => {
     try {
-        const tasks = await taskService.getAllTasks();
+        const tasks = await taskService.getAllTasks(req.user.id);
+
+        if (tasks.length === 0){
+            return res.status(200).json({ message: 'Nenhuma tarefa encontrada.'})
+        }
+
         res.status(200).json({ message: 'Lista de tarefas:', data: tasks })
 
     } catch (error) {
@@ -26,7 +31,7 @@ exports.getAllTasks = async (req, res) => {
 
 exports.showTask = async (req, res) => {
     try {
-        const task = await taskService.showTask(req.params.id);
+        const task = await taskService.showTask(req.params.id, req.user.id);
         res.status(200).json({ data: task})
 
     } catch (error) {

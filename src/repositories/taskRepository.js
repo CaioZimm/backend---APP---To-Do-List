@@ -18,23 +18,22 @@ exports.create = async (task) => {
     }
 }
 
-exports.index = async () => {
-    return await Task.find();
+exports.index = async (idUser) => {
+    return await Task.find({ idUser: idUser });
 }
 
-exports.showTask = async (id) => {
+exports.showTask = async (id, idUser) => {
     try {
-        const task = await Task.findById(id)
+        const task = await Task.findOne({ _id: id, idUser: idUser}).populate('idCategory', 'name color')
 
         if(!task){
-            res.status(404).json({message: 'Tarefa não encontrada'})
-            return
+            throw new Error('Tarefa não encontrada.')
         }
 
         return task;
 
     } catch (error) {
-        throw new Error('Tarefa não encontrada');
+        throw new Error(error.message);
     }
 }
 

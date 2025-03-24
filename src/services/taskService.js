@@ -11,12 +11,12 @@ exports.createTask = async (title, date, idUser, idCategory = null) => {
     return await taskRepository.create(newTask);
 };
 
-exports.getAllTasks = async () => {
-    return await taskRepository.index();
+exports.getAllTasks = async (idUser) => {
+    return await taskRepository.index(idUser);
 };
 
-exports.showTask = async (id) => {
-    return await taskRepository.showTask(id);
+exports.showTask = async (id, idUser) => {
+    return await taskRepository.showTask(id, idUser);
 };
 
 exports.putTask = async (id, title, date, idCategory) => {
