@@ -14,7 +14,9 @@ exports.registerUser = async (req, res) => {
 
     try {
         const user = await authService.registerUser(name, email, password);
-        res.status(201).json({ message: 'Usuário criado com sucesso', data: user})
+        const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET, { expiresIn: '4h'});
+
+        return res.status(201).json({ message: 'Usuário criado com sucesso', token, data: user })
 
     } catch (error) {
         console.error(error);
@@ -42,7 +44,7 @@ exports.loginUser = async (req, res) => {
         return res.status(200).json({ message: 'Logado com sucesso', token})
 
     } catch (error) {
-        res.status(500).json({ message: error })
+        return res.status(500).json({ message: error.message })
     }
 }
 
