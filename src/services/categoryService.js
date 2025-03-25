@@ -19,7 +19,12 @@ exports.showCategory = async (id, idUser) => {
 }
 
 exports.putCategory = async (id, name, color) => {
-    return await categoryRepository.updateCategory(id, { name, color });
+    const updatedCategory = {};
+
+    if (name) updatedCategory.name = name
+    if (color) updatedCategory.color = color
+
+    return await categoryRepository.updateCategory(id, updatedCategory);
 }
 
 exports.deleteCategory = async (id) => {

@@ -5,41 +5,46 @@ const redis = new Redis()
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await userService.getAllUsers();
-        res.status(200).json({ message: 'Lista de usuários:', data: users})
+        return res.status(200).json({ message: 'Lista de usuários:', data: users})
+        
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        return res.status(500).json({ error: error.message })
     }
 }
 
 exports.getMyProfile = async (req, res) => {
     try {
         const user = await userService.getMyProfile(req.user.id);
-        res.status(200).json({ data: user })
+        return res.status(200).json({ data: user })
 
     } catch (error) {
-        res.status(404).json({ error: error.message })        
+        return res.status(404).json({ error: error.message })        
     }
 }
 
 exports.getUser = async (req, res) => {
     try {
         const user = await userService.getUser(req.params.id);
-        res.status(200).json({ data: user })
+        return res.status(200).json({ data: user })
 
     } catch (error) {
-        res.status(404).json({ error: error.message })      
+        return res.status(404).json({ error: error.message })      
     }
 }
 
 exports.putUser = async (req, res) => {
     const { name, email } = req.body
 
+    if (!name && !email){
+        return res.status(400).json({ message: 'Nenhuma alteração feita.' })
+    }
+
     try {
-        await userService.putUser(req.user.id, name, email);
-        res.status(200).json({ message: 'Usuário atualizado'})
+        const updatedUser = await userService.putUser(req.user.id, name, email);
+        return res.status(200).json({ message: 'Usuário atualizado', data: updatedUser })
 
     } catch (error) {
-        res.status(404).json({ error: error.message })   
+        return res.status(404).json({ error: error.message })   
     }
 }
 
@@ -52,10 +57,10 @@ exports.putPassword = async (req, res) => {
 
     try {
         await userService.putPassword(req.user.id, password_current, new_password);
-        res.status(200).json({ message: 'Senha atualizada com sucesso!'})
+        return res.status(200).json({ message: 'Senha atualizada com sucesso!'})
 
     } catch (error) {
-        res.status(404).json({ error: error.message })
+        return res.status(404).json({ error: error.message })
     }
 }
 
@@ -66,9 +71,9 @@ exports.deleteUser = async (req, res) => {
         await userService.deleteUser(req.user.id);
         await redis.setex(`blacklist:${token}`, 3600, 'invalid');
 
-        res.status(200).json({ message: 'Usuário deletado com sucesso'})
+        return res.status(200).json({ message: 'Usuário deletado com sucesso'})
 
     } catch (error) {
-        res.status(404).json({ error: error.message })   
+        return res.status(404).json({ error: error.message })   
     }
 }

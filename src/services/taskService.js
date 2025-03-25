@@ -20,7 +20,13 @@ exports.showTask = async (id, idUser) => {
 };
 
 exports.putTask = async (id, title, date, idCategory) => {
-    return await taskRepository.updateTask(id, { title, date, idCategory });
+    const updatedTask = {};
+
+    if (title) updatedTask.title = title
+    if (date) updatedTask.date = date
+    if (idCategory) updatedTask.idCategory = idCategory
+
+    return await taskRepository.updateTask(id, updatedTask);
 }
 
 exports.deleteTask = async (id) => {

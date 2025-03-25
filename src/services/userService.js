@@ -13,7 +13,12 @@ exports.getUser = async (id) => {
 }
 
 exports.putUser = async (id, name, email) => {
-    return await userRepository.updateUser(id, { name, email });
+    const updatedUser = {}
+
+    if (name) updatedUser.name = name
+    if (email) updatedUser.email = email
+
+    return await userRepository.updateUser(id, updatedUser);
 }
 
 exports.putPassword = async (id, password_current, new_password) => {
