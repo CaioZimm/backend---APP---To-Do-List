@@ -19,7 +19,7 @@ exports.create = async (task) => {
 }
 
 exports.index = async (idUser) => {
-    return await Task.find({ idUser: idUser });
+    return await Task.find({ idUser: idUser }).populate('idCategory', 'name color');
 }
 
 exports.showTask = async (id, idUser) => {
@@ -42,8 +42,7 @@ exports.updateTask = async (id, updatedTask) => {
         const task = await Task.findByIdAndUpdate(id, updatedTask, { new: true, runValidators: true })
 
         if(!task){
-            res.status(404).json({ message: 'Tarefa não encontrada'})
-            return
+            throw new Error('Tarefa não encontrada')
         }
 
         return task;
@@ -59,7 +58,6 @@ exports.deleteTask = async (id) => {
 
         if(!task){
             throw new Error('Tarefa não encontrada');
-            return;
         }
 
         await task.deleteOne()

@@ -32,7 +32,7 @@ exports.showCategory = async (id, idUser) => {
         return category;
 
     } catch (error) {
-        throw new Error(error.message)
+        throw new Error('Erro ao buscar categoria ' + error.message)
     }
 }
 
@@ -41,8 +41,7 @@ exports.updateCategory = async (id, updatedCategory) => {
         const category = await Category.findByIdAndUpdate(id, updatedCategory, { new: true, runValidators: true })
 
         if(!category){
-            res.status(404).json({ message: 'Categoria não encontrada'})
-            return
+            throw new Error('Categoria não encontrada')
         }
 
         return category;
@@ -57,8 +56,7 @@ exports.deleteCategory = async (id) => {
         const category = await Category.findById(id)
 
         if(!category){
-            res.status(404).json({ message: 'Categoria não encotrada'})
-            return
+            throw new Error('Categoria não encontrada.')
         }
 
         await category.deleteOne()

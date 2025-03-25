@@ -31,8 +31,7 @@ exports.logout = async (id) => {
         const user = await User.findById(id);
 
         if(!user){
-            res.status(404).json({ message: 'Usuário não encontrado'})
-            return
+            throw new Error('Usuário não encontrado')
         }
         
         return;

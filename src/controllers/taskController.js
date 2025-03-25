@@ -22,41 +22,45 @@ exports.getAllTasks = async (req, res) => {
             return res.status(200).json({ message: 'Nenhuma tarefa encontrada.'})
         }
 
-        res.status(200).json({ message: 'Lista de tarefas:', data: tasks })
+        return res.status(200).json({ message: 'Lista de tarefas:', data: tasks })
 
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        return res.status(500).json({ error: error.message })
     }
 }
 
 exports.showTask = async (req, res) => {
     try {
         const task = await taskService.showTask(req.params.id, req.user.id);
-        res.status(200).json({ data: task})
+        return res.status(200).json({ data: task })
 
     } catch (error) {
-        res.status(404).json({ error: error.message })
+        return res.status(500).json({ error: error.message })
     }
 }
 
 exports.putTask = async (req, res) => {
     const { title, date, idCategory } = req.body;
 
+    if (!title && !date && !idCategory){
+        return res.status(400).json({ message: 'Nenhuma alteração feita.' })
+    }
+
     try {
-        const task = await taskService.putTask(req.params.id, title, date, idCategory)
-        res.status(200).json({ message: 'Tarefa atuaizada', data: task })
+        const updatedTask = await taskService.putTask(req.params.id, title, date, idCategory)
+        return res.status(200).json({ message: 'Tarefa atuaizada', data: updatedTask })
 
     } catch (error) {
-        res.status(404).json({ error: error.message })
+        return res.status(404).json({ error: error.message })
     }
 }
 
 exports.deleteTask = async (req, res) => {
     try {
         await taskService.deleteTask(req.params.id);
-        res.status(200).json({ message: 'Tarefa deletada com sucesso' })
+        return res.status(200).json({ message: 'Tarefa deletada com sucesso' })
 
     } catch (error) {
-        res.status(404).json({ error: error.message })
+        return res.status(404).json({ error: error.message })
     }
 }

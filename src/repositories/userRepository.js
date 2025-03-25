@@ -21,14 +21,13 @@ exports.showUser = async (id) => {
         const user = await User.findById(id);
 
         if(!user){
-            res.status(404).json({message: 'Usuário não encontrado'})
-            return
+            throw new Error('Usuário não encontrado')
         }
 
         return user;
 
     } catch (error) {
-        throw new Error('Usuário não encontrado');
+        throw new Error('Erro ao buscar usuário: ' + error.message);
     }
 }
 
@@ -37,14 +36,17 @@ exports.updateUser = async (id, updatedUser) => {
         const user = await User.findByIdAndUpdate(id, updatedUser, {new: true, runValidators: true })
 
         if(!user){
-            res.status(404).json({message: 'Usuário não encontrado'})
-            return
+            throw new Error('Usuário não encontrado')
+        }
+
+        if( updatedUser.name === user.name && updatedUser.email === user.email) {
+            throw new Error('Nenhuma alteração feita' )
         }
 
         return user;
 
     } catch (error) {
-        throw new Error('Erro ao atualizar perfil ' + error.message);
+        throw new Error('Erro ao atualizar perfil: ' + error.message);
     }
 }
 
@@ -53,8 +55,7 @@ exports.updatePassword = async (id, password_current, new_password) => {
         const user = await User.findById(id);
 
         if(!user){
-            res.status(404).json({message: 'Usuário não encontrado'})
-            return
+            throw new Error('Usuário não encontrado')
         }
 
         const verifyPassword = await bcrypt.compare(password_current, user.password);
@@ -84,8 +85,7 @@ exports.deleteUser = async (id) => {
         const user = await User.findById(id);
 
         if(!user){
-            res.status(404).json({ message: 'Usuário não encontrado'})
-            return
+            throw new Error('Usuário não encontrado')
         }
 
         await user.deleteOne()
