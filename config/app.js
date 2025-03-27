@@ -15,6 +15,9 @@ app.use(
 const authRoutes = require('../src/routes/authRoutes')
 app.use(authRoutes)
 
+const forgotPasswordRoutes = require('../src/routes/forgotPasswordRoutes')
+app.use(forgotPasswordRoutes)
+
 const userRoutes = require('../src/routes/userRoutes')
 app.use(userRoutes)
 
