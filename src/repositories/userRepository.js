@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt')
+const fs = require('fs')
+const path = require('path')
 const User = require('../models/User')
 
 exports.findAll = async () => {
@@ -40,8 +42,34 @@ exports.updateUser = async (id, updatedUser) => {
         }
 
         if( updatedUser.name === user.name && updatedUser.email === user.email) {
-            throw new Error('Nenhuma alteração feita' )
+            throw new Error('Nenhuma alteração feita')
         }
+        
+        return user;
+
+    } catch (error) {
+        throw new Error('Erro ao atualizar perfil: ' + error.message);
+    }
+}
+
+exports.updatePhoto = async (id, photo) => {
+    try {
+        const user = await User.findById(id)
+
+        if(!user){
+            throw new Error('Usuário não encontrado')
+        }
+
+        if(user.photo !== 'uploads/default.png'){
+            const filePath = path.join(__dirname, '..', '..', user.photo)
+
+            if(fs.existsSync(filePath)){
+                fs.unlinkSync(filePath)
+            }
+        }
+
+        user.photo = photo
+        await user.save()
 
         return user;
 

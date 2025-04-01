@@ -15,10 +15,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         min: 4
     },
-    // photo: {
-    //     type: Image,
-    //     default: null,
-    // },
+    photo: {
+        type: String,
+        default: 'default.png',
+    },
     createdAt: {
         type: Date,
         default: Date.now

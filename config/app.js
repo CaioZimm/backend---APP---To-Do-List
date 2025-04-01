@@ -27,6 +27,8 @@ app.use(taskRoutes)
 const categoryRoutes = require('../src/routes/categoryRoutes')
 app.use(categoryRoutes)
 
+app.use('/uploads', express.static('uploads'))
+
 // Importação para o banco de dados
 require('./database');
 app.listen(8000)

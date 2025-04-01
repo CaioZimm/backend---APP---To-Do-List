@@ -48,6 +48,20 @@ exports.putUser = async (req, res) => {
     }
 }
 
+exports.putPhoto = async (req, res) => {
+    if (!req.file){
+        return res.status(400).json({ error: 'Nenhuma imagem foi enviada.' })
+    }
+    
+    try {
+        const updatedPhoto = await userService.putPhoto(req.user.id, req.file.path);
+        return res.status(200).json({ message: 'Foto de perfil atualizada com sucesso', data: updatedPhoto.photo })
+
+    } catch (error) {
+        return res.status(404).json({ error: error.message })
+    }
+}
+
 exports.putPassword = async (req, res) => {
     const { password_current, new_password, new_password_confirm } = req.body
 

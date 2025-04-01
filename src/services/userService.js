@@ -21,6 +21,10 @@ exports.putUser = async (id, name, email) => {
     return await userRepository.updateUser(id, updatedUser);
 }
 
+exports.putPhoto = async (id, photo) => {
+    return await userRepository.updatePhoto(id, photo)
+}
+
 exports.putPassword = async (id, password_current, new_password) => {
     return await userRepository.updatePassword(id, password_current, new_password);
 }
