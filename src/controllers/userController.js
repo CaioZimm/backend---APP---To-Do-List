@@ -5,7 +5,7 @@ const redis = new Redis()
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await userService.getAllUsers();
-        return res.status(200).json({ message: 'Lista de usuários:', data: users})
+        return res.status(200).json({ message: 'Lista de usuários:', data: users })
         
     } catch (error) {
         return res.status(500).json({ error: error.message })

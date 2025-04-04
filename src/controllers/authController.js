@@ -30,13 +30,13 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne({ email: email})
 
     if (!user) {
-        return res.status(404).json({ message: 'Usuário não encontrado' })
+        return res.status(404).json({ message: 'Credenciais incorretas' })
     }
 
     const checkPassword = await bcrypt.compare(password, user.password)
 
     if (!checkPassword){
-        return res.status(422).json({ message: 'Senha incorreta'})
+        return res.status(422).json({ message: 'Credenciais incorretas' })
     }
 
     try {

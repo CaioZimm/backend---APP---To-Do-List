@@ -4,7 +4,7 @@ const path = require('path')
 const User = require('../models/User')
 
 exports.findAll = async () => {
-    return await User.find();
+    return await User.find().select('_id name email photo');
 }
 
 exports.showProfile = async (id) => {
@@ -20,7 +20,7 @@ exports.showProfile = async (id) => {
 
 exports.showUser = async (id) => {
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(id).select('_id name email photo');
 
         if(!user){
             throw new Error('Usuário não encontrado')
